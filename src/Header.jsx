@@ -45,11 +45,6 @@ function Header() {
 
     {/* FIM DO HEADER */}
 
-    {/* DIV DA IMAGEM PRINCIPAL */}
-    <div>
-      <img src="/staslideprod.png" alt="Imagem Grande" className="w-full" />
-    </div>
-
     </div>
   );
 }

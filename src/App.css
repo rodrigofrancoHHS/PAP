@@ -2,3 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
+.bg-banner-image {
+    background-image: url(/public/Duvidas.png);
+  }
+
+  .bg-rec-tshirt {
+    background-image: url(/public/tshirt1.png);
+  }
+
+  .bg-rec-sweats {
+    background-image: url(/public/sweat1.png);
+  }
