@@ -1,72 +1,81 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-function ContactPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+const ContactPage = () => {
 
-  const handleNameChange = (e) => {
-    setName(e.target.value);
-  };
-
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const handleMessageChange = (e) => {
-    setMessage(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar o formulário
-    // para o servidor ou realizar outras ações necessárias.
-    // Por exemplo, você pode fazer uma solicitação HTTP usando Axios.
-
-    // Resetar o estado do formulário
-    setName('');
-    setEmail('');
-    setMessage('');
-  };
-
+  
   return (
 
     <div>
-    <Header/>
-    <br/><br/><br/>
-    <div className="bg-gray-100 min-h-screen py-8">
-      <div className="container mx-auto">
-        <h2 className="text-3xl font-bold mb-6 text-center">Tem alguma questão?</h2>
-        <div className="flex flex-col md:flex-row justify-center items-center mb-8">
-          <img src="https://example.com/boneco-e-carta.jpg" alt="Boneco e carta" className="w-64 h-64 object-cover rounded-full mb-4 md:mb-0" />
-          <div className="ml-0 md:ml-8">
-            <p className="text-lg mb-2">Dados da Empresa:</p>
-            <p className="text-gray-600">Endereço: 123 Rua Principal</p>
-            <p className="text-gray-600">Cidade: Exemplo</p>
-            <p className="text-gray-600">Telefone: (123) 456-7890</p>
-          </div>
-        </div>
-        <form className="max-w-lg mx-auto">
+      <Header/>
+      <div className='flex items-center justify-center bg-gray-400 h-104 '>
+      {/* Lado Esquerdo */}
+      <div className="w-1/2 flex flex-col justify-center items-center p-8 rounded-l-lg">
+        <h1 className="text-4xl font-bold text-gray-800 mb-4">Entre em contato</h1>
+        <p className="text-xl text-gray-700 mb-8">Bem-vindo à nossa página de contatos!</p>
+        
+        {/* Formulário de contato */}
+        <form className="w-full max-w-lg">
           <div className="mb-4">
-            <label htmlFor="name" className="block text-gray-700 text-sm font-bold mb-2">Nome:</label>
-            <input type="text" id="name" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" />
+            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="name">
+              Nome
+            </label>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Seu nome" />
           </div>
           <div className="mb-4">
-            <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">Email:</label>
-            <input type="email" id="email" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500" />
+            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="email">
+              Email
+            </label>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Seu email" />
           </div>
           <div className="mb-4">
-            <label htmlFor="message" className="block text-gray-700 text-sm font-bold mb-2">Mensagem:</label>
-            <textarea id="message" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-blue-500"></textarea>
+            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="message">
+              Mensagem
+            </label>
+            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" rows="5" placeholder="Sua mensagem"></textarea>
           </div>
-          <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg w-full">Enviar</button>
+          <div className="flex items-center justify-center">
+            <button className="bg-black text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline !important" type="button">
+              Enviar
+            </button>
+          </div>
         </form>
       </div>
-    </div>
+      
+      {/* Lado Direito */}
+      <div className="w-1/2 flex flex-col justify-center items-center p-8">
+        <h2 className="text-3xl font-bold text-gray-800 mb-4">Informações da Empresa</h2>
+        <p className="text-xl text-gray-800 mb-8">Bem-vindo à nossa empresa! Aqui estão algumas informações sobre nós.</p>
+        <div className="bg-white rounded p-4">
+        <div className="flex items-center text-gray-800 mb-4">
+    <FontAwesomeIcon icon={faMapMarkerAlt} className="mr-2" />
+    <span>
+      ManelSport <br/>
+      Carlos Manuel Coelho Dias, Lda | NIF: PT50 504 552 392<br/>
+      Rua José Verissimo - Loja A - Prédio AMJ - Santa Cruz<br/>
+      2560-499 SILVEIRA<br/>
+      Portugal<br/>
+    </span>
+  </div>
+  
+  <a href="tel:+123456789" className="flex items-center text-gray-800 mb-4">
+    <FontAwesomeIcon icon={faPhone} className="mr-2" />
+    <span>+351 261931617</span>
+  </a>
+  
+  <a href="mailto:info@empresa.com" className="flex items-center text-gray-800">
+    <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+    <span>manelsport@manelsport.com</span>
+  </a> 
+      </div>
+      </div>
+      </div>
+      <Footer/>
     </div>
   );
-}
+};
 
 export default ContactPage;

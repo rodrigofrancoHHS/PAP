@@ -20,9 +20,9 @@ function Header() {
           <ul className="flex space-x-4 text-xl">
             <li><Link to="/" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Sweats</Link></li>
             <li><Link to="/products" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">T-Shirts</Link></li>
-            <li><Link to="/ContactPage/" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Chapéus-Gorros</Link></li>
-            <li><Link to="/contact" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Sobre Nós</Link></li>
-            <li><Link to="/contact" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Contactos</Link></li>
+            <li><Link to="/contact" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Chapéus-Gorros</Link></li>
+            <li><Link to="/SobreNos/" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Sobre Nós</Link></li>
+            <li><Link to="/ContactPage/" className=" hover:bg-black hover:text-white px-4 py-2 rounded-lg">Contactos</Link></li>
           </ul>
         </nav>
 

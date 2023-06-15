@@ -13,3 +13,9 @@
   .bg-rec-sweats {
     background-image: url(/public/sweat1.png);
   }
+
+  .bg-contactos {
+    background-image: url(/public/staslideprod.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    }

@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from './Menu';
-import HelloPage from './HelloPage';
 import ContactPage from './ContactPage';
+import SobreNos from './SobreNos';
 
 
 function App() {
@@ -10,6 +10,7 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
+          <Route path="/SobreNos/" element={<SobreNos />} />
           <Route path="/ContactPage/" element={<ContactPage />} />
           <Route path="/" element={<Menu />} />
         </Routes>
