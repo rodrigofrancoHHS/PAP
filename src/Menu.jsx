@@ -1,8 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Produtos from './Produtos';
-import Moedas from './Moedas';
-import moment from 'moment';
-import { Link} from 'react-router-dom';
+import React from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import ProdDestaque from './ProdDestaque';

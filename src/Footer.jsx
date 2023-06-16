@@ -16,8 +16,7 @@ function Footer() {
           <div className="col-span-1 text-center">
             <h2 className="text-2xl font-bold mb-4">A NOSSA EMPRESA</h2>
             <ul className="space-y-2">
-              <li><Link to="/" className="text-gray-400 hover:text-white">Sobre ManelSport</Link></li>
-              <li><Link to="/products" className="text-gray-400 hover:text-white">Team Manelsport</Link></li>
+              <li><Link to="/SobreNos/" className="text-gray-400 hover:text-white">Sobre STA</Link></li>
               <li><Link to="/about" className="text-gray-400 hover:text-white">Termos e Condições</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Informação legal</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Resolução Alternativa de Litígios de Consumo</Link></li>
@@ -26,7 +25,7 @@ function Footer() {
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Devolução e Troca</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Envio e Pagamento</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Direito de Livre Resolução</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Contacte-nos</Link></li>
+              <li><Link to="/ContactPage/" className="text-gray-400 hover:text-white">Contacte-nos</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Lojas</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Mapa do site</Link></li>
             </ul>
