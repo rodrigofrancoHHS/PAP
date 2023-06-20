@@ -1,20 +1,23 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function ProdDestaque() {
+
+  
   // Array de produtos
   const products = [
-    { name: 'SANTA CRUZ CLÁSSICA | SWEAT | NAVY', price: '29,90', quantity: '12', img: '/sweat1.png' },
-    { name: 'SANTA CRUZ MAGIC LAND ROUND | SWEAT | GREY', price: '29,90', quantity: '34', img: '/sweat2.png' },
-    { name: 'SANTA CRUZ STA KEEP ON SLIDING JR | SWEAT | GREEN', price: '29,90', quantity: '13', img: '/sweat3.png' },
-    { name: 'SANTA CRUZ OESTE AGRESTE | CREW | NAVY', price: '24,90', quantity: '2', img: '/sweat4.png'},
-    { name: 'SANTA CRUZ PENEDO | SWEAT | BEJE', price: '34,90', quantity: '17', img: '/sweat5.png' },
-    { name: 'SANTA CRUZ CLASSICA | T-SHIRT | GREY', price: '15,90', quantity: '7', img: '/tshirt1.png' },
-    { name: 'SANTA CRUZ ELEMENTS FIRE | T-SHIRT | BLACK', price: '19,90', quantity: '21', img: '/tshirt2.png' },
-    { name: 'SANTA CRUZ STA QUILHAS | T-SHIRT JUNIOR | NAVY', price: '15,90', quantity: '12', img: '/tshirt3.png' },
-    { name: 'SANTA CRUZ MS65 | T-SHIRT | GREY', price: '19,90', quantity: '35', img: '/tshirt4.png' },
-    { name: 'SANTA CRUZ PENEDO | T-SHIRT | BLACK', price: '19,90', quantity: '11', img: '/tshirt5.png' },
-    { name: 'SANTA CRUZ STA BORDADO FLEXFIT BONÉ | BLACK', price: '19,90', quantity: '10', img: '/cap1.png' },
-    { name: 'SANTA CRUZ STA BORDADO FLEXFIT BONÉ | GREEN', price: '19,90', quantity: '4', img: '/cap2.png' }
+    {id: '1', name: 'SANTA CRUZ CLÁSSICA | SWEAT | NAVY', price: '29,90', quantity: '12', img: '/sweat1.png' },
+    {id: '2', name: 'SANTA CRUZ MAGIC LAND ROUND | SWEAT | GREY', price: '29,90', quantity: '34', img: '/sweat2.png' },
+    {id: '3', name: 'SANTA CRUZ STA KEEP ON SLIDING JR | SWEAT | GREEN', price: '29,90', quantity: '13', img: '/sweat3.png' },
+    {id: '4', name: 'SANTA CRUZ OESTE AGRESTE | CREW | NAVY', price: '24,90', quantity: '2', img: '/sweat4.png'},
+    {id: '5', name: 'SANTA CRUZ PENEDO | SWEAT | BEJE', price: '34,90', quantity: '17', img: '/sweat5.png' },
+    {id: '6', name: 'SANTA CRUZ CLASSICA | T-SHIRT | GREY', price: '15,90', quantity: '7', img: '/tshirt1.png' },
+    {id: '7', name: 'SANTA CRUZ ELEMENTS FIRE | T-SHIRT | BLACK', price: '19,90', quantity: '21', img: '/tshirt2.png' },
+    {id: '8', name: 'SANTA CRUZ STA QUILHAS | T-SHIRT JUNIOR | NAVY', price: '15,90', quantity: '12', img: '/tshirt3.png' },
+    {id: '9', name: 'SANTA CRUZ MS65 | T-SHIRT | GREY', price: '19,90', quantity: '35', img: '/tshirt4.png' },
+    {id: '10', name: 'SANTA CRUZ PENEDO | T-SHIRT | BLACK', price: '19,90', quantity: '11', img: '/tshirt5.png' },
+    {id: '11', name: 'SANTA CRUZ STA BORDADO FLEXFIT BONÉ | BLACK', price: '19,90', quantity: '10', img: '/cap1.png' },
+    {id: '12', name: 'SANTA CRUZ STA BORDADO FLEXFIT BONÉ | GREEN', price: '19,90', quantity: '4', img: '/cap2.png' }
   ];
 
   return (
@@ -39,9 +42,11 @@ function ProdDestaque() {
             )}
           </div>
           <div class="p-6">
-            <button class="bg-black hover:bg-gray-800 text-white font-bold py-2 px-4 rounded-full w-full">
+          <Link to={`/product-details?id=${product.id}&name=${product.name}&price=${product.price}`}>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
               Selecionar
             </button>
+          </Link>
           </div>
         </div>
       ))}
