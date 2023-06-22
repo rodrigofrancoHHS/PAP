@@ -6,7 +6,7 @@ import BannerDuvidas from './BannerDuvidas';
 import Recomendacoes from './Recomendações';
 
 
-function VendingMachine() {
+function Menu() {
 
   
 
@@ -29,4 +29,4 @@ function VendingMachine() {
   );
 }
 
-export default VendingMachine;
+export default Menu;

@@ -1,19 +1,90 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import Header from './Header';
+import Footer from './Footer';
 
-const ProductDetails = (props) => {
-  // Obter detalhes do produto dos parâmetros da URL
-  const searchParams = new URLSearchParams(props.location.search);
-  const productId = searchParams.get('id');
-  const productName = searchParams.get('name');
-  const productPrice = searchParams.get('price');
+const ProductDetails = () => {
+  const { id } = useParams();
+  const [product, setProduct] = useState(null);
+  const [quantity, setQuantity] = useState(1); // Estado para a quantidade selecionada
+  const apiUrl = 'https://localhost:7241';
+
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await fetch(`${apiUrl}/api/TodosProdutos/Apenas${id}`);
+        const productDetails = await response.json();
+
+        setProduct(productDetails);
+      } catch (error) {
+        console.error('Erro ao obter os detalhes do produto da API:', error);
+      }
+    };
+
+    fetchProductDetails();
+  }, [id]);
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
+  const handleQuantityChange = (event) => {
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      setQuantity(value);
+    }
+  };
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1);
+  };
 
   return (
     <div>
-      <h2>Detalhes do Produto</h2>
-      <p>ID: {productId}</p>
-      <p>Nome: {productName}</p>
-      <p>Preço: {productPrice}</p>
-      {/* Resto do conteúdo da página de detalhes do produto */}
+      <Header />
+      <div className="container mx-auto p-8">
+        <div className="flex flex-col md:flex-row">
+          <div className="md:w-1/2">
+            <img src={product.img} alt={product.name} className="w-full h-auto" />
+          </div>
+          <div className="md:w-1/2 md:pl-8">
+            <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
+            <p className="text-lg mb-4">Preço: {product.price}</p>
+            <div className="mb-4">
+              <label htmlFor="quantity" className="block font-medium text-gray-700">Quantidade:</label>
+              <div className="flex items-center">
+                <button className="text-gray-500 hover:text-gray-700" onClick={decreaseQuantity}>
+                  -
+                </button>
+                <input
+                  id="quantity"
+                  type="number"
+                  min={1}
+                  max={product.quantity}
+                  value={quantity}
+                  onChange={handleQuantityChange}
+                  className="border border-gray-300 px-3 py-2 rounded-md mx-2"
+                />
+                <button className="text-gray-500 hover:text-gray-700" onClick={increaseQuantity} disabled={quantity >= product.quantity}>
+                  +
+                </button>
+              </div>
+            </div>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+              Adicionar ao Carrinho
+            </button>
+            <br/><br/><br/>
+            <p className="text-gray-700 mb-4">{product.desc}</p>
+          </div>
+        </div>
+      </div>
+      <Footer />
     </div>
   );
 };

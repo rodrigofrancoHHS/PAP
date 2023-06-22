@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-function ProdDestaque() {
+function ProdCaps() {
 
   const [products, setProducts] = useState([]);
   
@@ -11,7 +11,7 @@ function ProdDestaque() {
     debugger;
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${apiUrl}/api/TodosProdutos/ListadeProdutos`);
+        const response = await fetch(`${apiUrl}/api/TodosProdutos/ListadeCaps`);
         const produtosCarregados = await response.json();
   
         setProducts(produtosCarregados);
@@ -28,7 +28,7 @@ function ProdDestaque() {
   return (
 <div>
   <div class="container mx-auto">
-  <h2 class="text-5xl font-extrabold text-center mb-6 py-8 bg-gradient-to-r from-red-500 to-blue-500 text-white rounded-lg">DESTAQUES</h2>
+  <h2 class="text-5xl font-extrabold text-center mb-6 py-8 bg-gradient-to-r from-red-500 to-blue-500 text-white rounded-lg">CAPS</h2>
     <div class="grid grid-cols-4 gap-8">
       {products.map((product) => (
         <div key={product.name} class="border border-gray-300 rounded-lg shadow-lg overflow-hidden transform transition-transform duration-300 hover:scale-105">
@@ -64,4 +64,4 @@ function ProdDestaque() {
   );
 }
 
-export default ProdDestaque;
+export default ProdCaps;
