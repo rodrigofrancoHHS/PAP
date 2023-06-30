@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
-const ProductDetails = () => {
+const ProductDetails = ({ addToCart }) => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(1); // Estado para a quantidade selecionada
+  const [quantity, setQuantity] = useState(1);
+
   const apiUrl = 'https://localhost:7241';
 
   useEffect(() => {
@@ -23,10 +24,6 @@ const ProductDetails = () => {
 
     fetchProductDetails();
   }, [id]);
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
 
   const handleQuantityChange = (event) => {
     const value = parseInt(event.target.value, 10);
@@ -45,6 +42,24 @@ const ProductDetails = () => {
     setQuantity(quantity + 1);
   };
 
+  const handleAddToCart = () => {
+    const item = {
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      img: product.img,
+      quantity: quantity,
+    };
+
+    addToCart(item);
+
+    setQuantity(1);
+  };
+
+  if (!product) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Header />
@@ -57,7 +72,9 @@ const ProductDetails = () => {
             <h2 className="text-3xl font-bold mb-4">{product.name}</h2>
             <p className="text-lg mb-4">Preço: {product.price}</p>
             <div className="mb-4">
-              <label htmlFor="quantity" className="block font-medium text-gray-700">Quantidade:</label>
+              <label htmlFor="quantity" className="block font-medium text-gray-700">
+                Quantidade:
+              </label>
               <div className="flex items-center">
                 <button className="text-gray-500 hover:text-gray-700" onClick={decreaseQuantity}>
                   -
@@ -71,14 +88,23 @@ const ProductDetails = () => {
                   onChange={handleQuantityChange}
                   className="border border-gray-300 px-3 py-2 rounded-md mx-2"
                 />
-                <button className="text-gray-500 hover:text-gray-700" onClick={increaseQuantity} disabled={quantity >= product.quantity}>
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={increaseQuantity}
+                  disabled={quantity >= product.quantity}
+                >
                   +
-                </button>
+                </button> 
               </div>
             </div>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
+            <Link to={`/cart`}>
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleAddToCart}
+            >
               Adicionar ao Carrinho
             </button>
+            </Link>
             <br/><br/><br/>
             <p className="text-gray-700 mb-4">{product.desc}</p>
           </div>

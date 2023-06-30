@@ -11,7 +11,7 @@ const ContactPage = () => {
 
     <div>
       <Header/>
-      <div className='flex items-center justify-center bg-gray-400 h-104 '>
+      <div className='flex items-center justify-center bg-gray-100 h-104 '>
       {/* Lado Esquerdo */}
       <div className="w-1/2 flex flex-col justify-center items-center p-8 rounded-l-lg">
         <h1 className="text-4xl font-bold text-gray-800 mb-4">Entre em contato</h1>
