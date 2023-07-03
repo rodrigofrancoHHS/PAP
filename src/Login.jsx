@@ -20,7 +20,7 @@ const Login = () => {
     event.preventDefault();
 
     if (!username || !password) {
-      setError('Please enter both username and password');
+      setError('Por favor insira os campos utilizador e password');
       return;
       }
 
@@ -39,7 +39,6 @@ const Login = () => {
       if (response.ok) {
         // Login bem-sucedido
         // Redirecionar para a página principal ou realizar outras ações necessárias
-        console.log('Login realizado com sucesso');
       } else {
         const errorResponse = await response.text();
         setError(errorResponse);
@@ -51,7 +50,6 @@ const Login = () => {
     // Limpar os campos do formulário após a submissão
     setUsername('');
     setPassword('');
-    setError('');
   };
 
   return (
