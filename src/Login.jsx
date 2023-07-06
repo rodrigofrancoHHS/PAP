@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
@@ -6,50 +6,58 @@ import Footer from './Footer';
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
-  };
+  // Verifica se o cookie existe
+  useEffect(() => {
+    const cookieUsername = getCookie('username');
+    if (cookieUsername) {
+      setIsLoggedIn(true);
+      setUsername(cookieUsername);
+    }
+  }, []);
 
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    if (!username || !password) {
-      setError('Por favor insira os campos utilizador e password');
-      return;
+  // Função para obter um cookie pelo nome
+  const getCookie = (name) => {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].split('=');
+      if (cookie[0] === name) {
+        return cookie[1];
       }
+    }
+    return null;
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    const url = `https://localhost:7180/api/Login?username=${username}&password=${password}`;
 
     try {
-
-      const url = `https://localhost:7241/api/Utilizadores/VerificarUtilizador?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-
       const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
-
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (response.ok) {
-        // Login bem-sucedido
-        // Redirecionar para a página principal ou realizar outras ações necessárias
+        // Login realizado com sucesso
+        console.log('Login realizado com sucesso');
+
+        // Cria o cookie de autenticação
+        document.cookie = `username=${username}; path=/`;
+
+        setPassword('');
+        setIsLoggedIn(true);
       } else {
-        const errorResponse = await response.text();
-        setError(errorResponse);
+        // Lidar com erro de Login
+        console.error('Erro durante o Login');
       }
     } catch (error) {
-      console.error('Erro ao conectar-se com a API:', error);
+      console.error('Erro de rede:', error);
     }
-
-    // Limpar os campos do formulário após a submissão
-    setUsername('');
-    setPassword('');
   };
 
   return (
@@ -57,47 +65,52 @@ const Login = () => {
       <Header />
       <div className="h-[500px] bg-gray-100 flex justify-center items-center">
         <div className="max-w-md w-full mx-auto p-8">
-          <h2 className="text-3xl font-bold mb-4">Login</h2>
-          <form onSubmit={handleSubmit}>
-            {error && <p className="text-red-500 mb-4">{error}</p>}
-            <div className="mb-4">
-              <label htmlFor="username" className="block text-gray-700 font-medium">
-                Username:
-              </label>
-              <input
-                type="text"
-                id="username"
-                value={username}
-                onChange={handleUsernameChange}
-                required
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            <div className="mb-6">
-              <label htmlFor="password" className="block text-gray-700 font-medium">
-                Password:
-              </label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={handlePasswordChange}
-                required
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mr-2"
-            >
-              Login
-            </button>
-            <Link to="/register">
-              <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
-                Registrar
-              </button>
-            </Link>
-          </form>
+          {isLoggedIn ? (
+            <h2 className="text-3xl font-bold mb-4">Bem-vindo, {username}!</h2>
+          ) : (
+            <>
+              <h2 className="text-3xl font-bold mb-4">Login</h2>
+              <form onSubmit={handleLogin}>
+                <div className="mb-4">
+                  <label htmlFor="username" className="block text-gray-700 font-medium">
+                    Username:
+                  </label>
+                  <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    required
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  />
+                </div>
+                <div className="mb-6">
+                  <label htmlFor="password" className="block text-gray-700 font-medium">
+                    Password:
+                  </label>
+                  <input
+                    type="password"
+                    id="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded mr-2"
+                >
+                  Login
+                </button>
+                <Link to="/register">
+                  <button className="bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded">
+                    Registrar
+                  </button>
+                </Link>
+              </form>
+            </>
+          )}
         </div>
       </div>
       <Footer />
@@ -106,4 +119,3 @@ const Login = () => {
 };
 
 export default Login;
-  
