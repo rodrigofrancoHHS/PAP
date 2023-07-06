@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState } from 'react';
+import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Menu from './Menu';
 import ContactPage from './ContactPage';
@@ -15,17 +15,6 @@ import Register from './Register';
 function App() {
 
 
-  const [cartItems, setCartItems] = useState([]);
-
-  const addToCart = (product) => {
-    setCartItems([...cartItems, product]);
-  };
-
-  const removeFromCart = (productId) => {
-    const updatedCartItems = cartItems.filter((item) => item.id !== productId);
-    setCartItems(updatedCartItems);
-  };
-
 
   return (
     <div className="App">
@@ -34,7 +23,7 @@ function App() {
           <Route path="/SobreNos" element={<SobreNos />} />
           <Route
             path="/product-details/:id"
-            element={<ProductDetails addToCart={addToCart} />}
+            element={<ProductDetails />}
           />
           <Route path="/ContactPage" element={<ContactPage />} />
           <Route path="/MenuSweats" element={<MenuSweats />} />
@@ -43,7 +32,7 @@ function App() {
           <Route path="/" element={<Menu />} />
           <Route
             path="/cart"
-            element={<Cart cartItems={cartItems} removeFromCart={removeFromCart} />}
+            element={<Cart  />}
           />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />

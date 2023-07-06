@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
 const Login = () => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -51,6 +52,9 @@ const Login = () => {
 
         setPassword('');
         setIsLoggedIn(true);
+
+        // Redireciona para a página Menu
+        navigate('/');
       } else {
         // Lidar com erro de Login
         console.error('Erro durante o Login');

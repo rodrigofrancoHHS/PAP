@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { FiUser, FiShoppingCart } from 'react-icons/fi';
+import { IoLogOutOutline } from 'react-icons/io5';
 
 function Header() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -25,6 +27,14 @@ function Header() {
       }
     }
     return null;
+  };
+
+  // Função para fazer logout e eliminar o cookie
+  const handleLogout = () => {
+    document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    setIsLoggedIn(false);
+    setUsername('');
+    navigate('/login');
   };
 
   return (
@@ -70,6 +80,9 @@ function Header() {
           {isLoggedIn ? (
             <>
               <span>Bem-vindo, {username}!</span>
+              <button className="hover:bg-black hover:text-white rounded-full p-2" onClick={handleLogout}>
+                <IoLogOutOutline className="h-6 w-6 text-gray-900 hover:text-white" />
+              </button>
               <button className="hover:bg-black hover:text-white rounded-full p-2">
                 <Link to="/cart">
                   <FiShoppingCart className="h-6 w-6 text-gray-900 hover:text-white" />
