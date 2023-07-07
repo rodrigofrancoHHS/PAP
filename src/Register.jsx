@@ -6,33 +6,47 @@ import Footer from './Footer';
 const Register = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+
+  const isValidEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const url = `https://localhost:7180/api/Login/register?username=${username}&password=${password}`;
-
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response.ok) {
-      // Registro realizado com sucesso
-      console.log('Registro realizado com sucesso');
-      setPassword('');
-      setUsername('');
-    } else {
-      // Lidar com erro de registro
-      console.error('Erro durante o registro');
+    if (!isValidEmail(email)) {
+      setError('Email inválido. Por favor, insira um email válido.');
+      return;
     }
-  }
-   catch (error) {
-    console.error('Erro de rede:', error);
-  }
+
+    setError('');
+
+    const url = `https://localhost:7180/api/Login/register?username=${username}&password=${password}&email=${email}`;
+
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (response.ok) {
+        // Registro realizado com sucesso
+        console.log('Registro realizado com sucesso');
+        setPassword('');
+        setUsername('');
+        setEmail('');
+      } else {
+        // Lidar com erro de registro
+        console.error('Erro durante o registro');
+      }
+    } catch (error) {
+      console.error('Erro de rede:', error);
+    }
   };
 
   return (
@@ -41,6 +55,7 @@ const Register = () => {
       <div className="h-[500px] bg-gray-100 flex justify-center items-center">
         <div className="max-w-md w-full mx-auto p-8">
           <h2 className="text-3xl font-bold mb-4">Registrar</h2>
+          {error && <div className="text-red-500 mb-4">{error}</div>}
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-700 font-medium">
               Username:
@@ -51,6 +66,20 @@ const Register = () => {
               name="username"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
+              required
+              className="border border-gray-300 px-3 py-2 rounded-md w-full"
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-gray-700 font-medium">
+              Email:
+            </label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
               className="border border-gray-300 px-3 py-2 rounded-md w-full"
             />

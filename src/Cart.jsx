@@ -1,12 +1,48 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
-const Cart = ({ cartItems, removeFromCart }) => {
+const Cart = () => {
+  const [cartItems, setCartItems] = useState([]);
+
+  useEffect(() => {
+    const cookieUsername = getCookie('username');
+    if (!cookieUsername) {
+      window.location.href = '/login'; // Redireciona para a página de login
+    } else {
+      const storedCartItems = localStorage.getItem('cartItems');
+      if (storedCartItems) {
+        setCartItems(JSON.parse(storedCartItems));
+      }
+    }
+  }, []);
+
+  const removeFromCart = (productId) => {
+    const updatedCartItems = cartItems.filter((item) => item.id !== productId);
+    setCartItems(updatedCartItems);
+    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+    localStorage.removeItem('cartItems');
+  };
+
   const calculateTotalPrice = () => {
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
     return totalPrice.toFixed(2);
+  };
+
+  const getCookie = (name) => {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].split('=');
+      if (cookie[0] === name) {
+        return cookie[1];
+      }
+    }
+    return null;
   };
 
   return (
@@ -35,6 +71,12 @@ const Cart = ({ cartItems, removeFromCart }) => {
               </div>
             ))}
             <p className="font-bold">Total: {calculateTotalPrice()} €</p>
+            <button
+              className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={clearCart}
+            >
+              Remover Todos
+            </button>
             <Link to="/checkout">
               <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded">
                 Finalizar Compra

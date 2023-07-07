@@ -3,7 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 
-const ProductDetails = ({ addToCart }) => {
+const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -43,16 +43,44 @@ const ProductDetails = ({ addToCart }) => {
   };
 
   const handleAddToCart = () => {
-    const item = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      img: product.img,
-      quantity: quantity,
-    };
+    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
 
-    addToCart(item);
+    // Verifica se o produto já está no carrinho
+    const existingItem = cartItems.find(item => item.id === product.id);
 
+    if (existingItem) {
+      // Atualiza a quantidade do produto no carrinho
+      const updatedItems = cartItems.map(item => {
+        if (item.id === product.id) {
+          // Verifica se a quantidade atualizada não excede a quantidade disponível do produto
+          const newQuantity = item.quantity + quantity;
+          if (newQuantity > product.quantity) {
+            // Excede a quantidade disponível, mantém a quantidade atual
+            return item;
+          } else {
+            // Atualiza a quantidade
+            return { ...item, quantity: newQuantity };
+          }
+        } else {
+          return item;
+        }
+      });
+
+      localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+    } else {
+      // Adiciona o produto ao carrinho
+      const newItem = {
+        id: product.id,
+        img: product.img,
+        name: product.name,
+        price: product.price,
+        quantity: quantity
+      };
+
+      localStorage.setItem('cartItems', JSON.stringify([...cartItems, newItem]));
+    }
+
+    // Limpa a quantidade selecionada
     setQuantity(1);
   };
 
@@ -97,14 +125,12 @@ const ProductDetails = ({ addToCart }) => {
                 </button> 
               </div>
             </div>
-            <Link to={`/cart`}>
             <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
               onClick={handleAddToCart}
             >
               Adicionar ao Carrinho
             </button>
-            </Link>
             <br/><br/><br/>
             <p className="text-gray-700 mb-4">{product.desc}</p>
           </div>
