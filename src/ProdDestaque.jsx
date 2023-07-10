@@ -39,7 +39,6 @@ function ProdDestaque() {
                 <div class="absolute bottom-0 left-0 right-0 px-6 py-4 opacity-0 transition-opacity duration-300 bg-black bg-opacity-75 text-white group-hover:opacity-100">
                   <h3 class="text-2xl font-bold mb-2">{product.name}</h3>
                   <p class="text-gray-300 mb-2">Preço: {product.price} €</p>
-                  <p class="text-gray-300">Quantidade: {product.quantity}</p>
                 </div>
               </div>
             ) : (

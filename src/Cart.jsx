@@ -6,28 +6,44 @@ import Footer from './Footer';
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
 
+  const getUserIdFromCookie = () => {
+    return getCookie('userId');
+  };
+
   useEffect(() => {
     const cookieUsername = getCookie('username');
+    const userId = getUserIdFromCookie();
+
     if (!cookieUsername) {
       window.location.href = '/login'; // Redireciona para a página de login
     } else {
-      const storedCartItems = localStorage.getItem('cartItems');
+      const cartItemsKey = `cartItems_${userId}`;
+      const storedCartItems = localStorage.getItem(cartItemsKey);
       if (storedCartItems) {
         setCartItems(JSON.parse(storedCartItems));
       }
     }
   }, []);
+  
 
   const removeFromCart = (productId) => {
+    const userId = getUserIdFromCookie();
+    const cartItemsKey = `cartItems_${userId}`;
+  
     const updatedCartItems = cartItems.filter((item) => item.id !== productId);
     setCartItems(updatedCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+    localStorage.setItem(cartItemsKey, JSON.stringify(updatedCartItems));
   };
+  
 
   const clearCart = () => {
+    const userId = getUserIdFromCookie();
+    const cartItemsKey = `cartItems_${userId}`;
+  
     setCartItems([]);
-    localStorage.removeItem('cartItems');
+    localStorage.removeItem(cartItemsKey);
   };
+  
 
   const calculateTotalPrice = () => {
     const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);

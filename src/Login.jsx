@@ -8,13 +8,17 @@ const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userId, setUserId] = useState(null);
 
   // Verifica se o cookie existe
   useEffect(() => {
     const cookieUsername = getCookie('username');
-    if (cookieUsername) {
+    const cookieUserId = getCookie('userId');
+
+    if (cookieUsername && cookieUserId) {
       setIsLoggedIn(true);
       setUsername(cookieUsername);
+      setUserId(cookieUserId);
     }
   }, []);
 
@@ -47,11 +51,16 @@ const Login = () => {
         // Login realizado com sucesso
         console.log('Login realizado com sucesso');
 
-        // Cria o cookie de autenticação
+        // Extrai o ID do usuário da resposta
+        const { id } = await response.json();
+
+        // Cria os cookies de autenticação
         document.cookie = `username=${username}; path=/`;
+        document.cookie = `userId=${id}; path=/`;
 
         setPassword('');
         setIsLoggedIn(true);
+        setUserId(id);
 
         // Redireciona para a página Menu
         navigate('/');

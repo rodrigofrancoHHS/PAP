@@ -43,14 +43,21 @@ const ProductDetails = () => {
   };
 
   const handleAddToCart = () => {
-    const cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+    const userId = getUserIdFromCookie(); // Obtém o ID do usuário do cookie
+    if (!userId) {
+      console.error('ID do usuário não encontrado');
+      return;
+    }
+
+    const cartItemsKey = `cartItems_${userId}`; // Chave do LocalStorage específica do usuário
+    const cartItems = JSON.parse(localStorage.getItem(cartItemsKey)) || [];
 
     // Verifica se o produto já está no carrinho
-    const existingItem = cartItems.find(item => item.id === product.id);
+    const existingItem = cartItems.find((item) => item.id === product.id);
 
     if (existingItem) {
       // Atualiza a quantidade do produto no carrinho
-      const updatedItems = cartItems.map(item => {
+      const updatedItems = cartItems.map((item) => {
         if (item.id === product.id) {
           // Verifica se a quantidade atualizada não excede a quantidade disponível do produto
           const newQuantity = item.quantity + quantity;
@@ -66,7 +73,7 @@ const ProductDetails = () => {
         }
       });
 
-      localStorage.setItem('cartItems', JSON.stringify(updatedItems));
+      localStorage.setItem(cartItemsKey, JSON.stringify(updatedItems));
     } else {
       // Adiciona o produto ao carrinho
       const newItem = {
@@ -74,14 +81,29 @@ const ProductDetails = () => {
         img: product.img,
         name: product.name,
         price: product.price,
-        quantity: quantity
+        quantity: quantity,
       };
 
-      localStorage.setItem('cartItems', JSON.stringify([...cartItems, newItem]));
+      localStorage.setItem(cartItemsKey, JSON.stringify([...cartItems, newItem]));
     }
 
     // Limpa a quantidade selecionada
     setQuantity(1);
+  };
+
+  const getUserIdFromCookie = () => {
+    return getCookie('userId');
+  };
+
+  const getCookie = (name) => {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      const cookie = cookies[i].split('=');
+      if (cookie[0] === name) {
+        return cookie[1];
+      }
+    }
+    return null;
   };
 
   if (!product) {
@@ -122,7 +144,7 @@ const ProductDetails = () => {
                   disabled={quantity >= product.quantity}
                 >
                   +
-                </button> 
+                </button>
               </div>
             </div>
             <button
@@ -131,7 +153,7 @@ const ProductDetails = () => {
             >
               Adicionar ao Carrinho
             </button>
-            <br/><br/><br/>
+            <br /><br /><br />
             <p className="text-gray-700 mb-4">{product.desc}</p>
           </div>
         </div>
