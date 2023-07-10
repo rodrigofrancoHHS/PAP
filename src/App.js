@@ -11,6 +11,7 @@ import MenuCaps from './MenuCaps';
 import Cart from './Cart';
 import Login from './Login';
 import Register from './Register';
+import Checkout from './checkout';
 
 function App() {
 
@@ -30,12 +31,10 @@ function App() {
           <Route path="/MenuTshirts" element={<MenuTshirts />} />
           <Route path="/MenuCaps" element={<MenuCaps />} />
           <Route path="/" element={<Menu />} />
-          <Route
-            path="/cart"
-            element={<Cart  />}
-          />
+          <Route path="/cart" element={<Cart  />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
+          <Route path='/checkout' element={<Checkout />} />
         </Routes>
       </BrowserRouter>
     </div>

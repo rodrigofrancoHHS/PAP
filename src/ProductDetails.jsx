@@ -81,6 +81,7 @@ const ProductDetails = () => {
         img: product.img,
         name: product.name,
         price: product.price,
+        quantitymax: product.quantity,
         quantity: quantity,
       };
 
