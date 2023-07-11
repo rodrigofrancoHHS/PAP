@@ -8,7 +8,6 @@ function ProdDestaque() {
   const apiUrl = 'https://localhost:7241';
   
   useEffect(() => {
-    debugger;
     const fetchProducts = async () => {
       try {
         const response = await fetch(`${apiUrl}/api/TodosProdutos/ListadeProdutos`);

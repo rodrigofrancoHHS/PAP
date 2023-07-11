@@ -55,6 +55,42 @@ const Checkout = () => {
     setPaymentMethod(event.target.value);
   };
 
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    const userId = getUserIdFromCookie();
+    const cartItemsKey = `cartItems_${userId}`;
+    const storedCartItems = localStorage.getItem(cartItemsKey);
+
+    if (!storedCartItems) {
+      console.error('O carrinho está vazio.');
+      return;
+    }
+
+    try {
+      const orderData = {
+        user_id: userId,
+        email: email,
+        phone: phone,
+        address: address,
+        payment_method: paymentMethod,
+        total_price: calculateTotalPrice(),
+      };
+
+      await fetch('https://localhost:7241/api/Orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(orderData),
+      });
+
+
+    } catch (error) {
+      console.error('Erro ao enviar o pedido:', error);
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -146,8 +182,13 @@ const Checkout = () => {
                 {/* Adicione mais opções de pagamento aqui, se necessário */}
               </select>
             </div>
-            {/* Botão de Envio do Formulário */}
-            {/* ... */}
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+              onClick={handleSubmit}
+            >
+              Enviar Pedido
+            </button>
           </div>
         </div>
       </div>
