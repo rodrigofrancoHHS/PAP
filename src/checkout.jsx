@@ -8,6 +8,9 @@ const Checkout = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const getUserIdFromCookie = () => {
     return getCookie('userId');
@@ -67,6 +70,9 @@ const Checkout = () => {
       return;
     }
 
+    setIsSubmitting(true);
+    setErrorMessage('');
+
     try {
       const orderData = {
         user_id: userId,
@@ -85,9 +91,19 @@ const Checkout = () => {
         body: JSON.stringify(orderData),
       });
 
-
+      // Limpar o carrinho e redirecionar para uma página de confirmação
+      localStorage.removeItem(cartItemsKey);
+      setCartItems([]);
+      setEmail('');
+      setPhone('');
+      setAddress('');
+      setPaymentMethod('');
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Erro ao enviar o pedido:', error);
+      setErrorMessage('Ocorreu um erro ao enviar o pedido. Por favor, tente novamente mais tarde.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -96,101 +112,109 @@ const Checkout = () => {
       <Header />
       <div className="container mx-auto p-8">
         <h2 className="text-3xl font-bold mb-4">Checkout</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="bg-gray-100 p-4">
-            <h3 className="text-lg font-bold mb-2">Produtos Selecionados</h3>
-            {cartItems.length === 0 ? (
-              <p>O carrinho está vazio.</p>
-            ) : (
-              <>
-                <ul className="mb-4">
-                  {cartItems.map((item) => (
-                    <li key={item.id} className="mb-2">
-                      {item.name} ({item.quantity})
-                    </li>
-                  ))}
-                </ul>
-                <p className="text-gray-700">Entrega: Gratuita</p>
-                <p className="font-bold">Total: {calculateTotalPrice()} €</p>
-              </>
-            )}
+        {isSubmitted ? (
+          <div className="text-green-600 font-bold mb-4">
+            O pedido foi enviado com sucesso! Aguarde a confirmação por e-mail.
           </div>
-          <div>
-            <h3 className="text-lg font-bold mb-2">Detalhes do Cliente</h3>
-            <div className="mb-4">
-              <label htmlFor="username" className="block font-medium text-gray-700">
-                Nome de Utilizador:
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={getCookie('username')}
-                readOnly
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              />
+        ) : (
+          <form onSubmit={handleSubmit}>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="bg-gray-100 p-4">
+                <h3 className="text-lg font-bold mb-2">Produtos Selecionados</h3>
+                {cartItems.length === 0 ? (
+                  <p>O carrinho está vazio.</p>
+                ) : (
+                  <>
+                    <ul className="mb-4">
+                      {cartItems.map((item) => (
+                        <li key={item.id} className="mb-2">
+                          {item.name} ({item.quantity})
+                        </li>
+                      ))}
+                    </ul>
+                    <p className="text-gray-700">Entrega: Gratuita</p>
+                    <p className="font-bold">Total: {calculateTotalPrice()} €</p>
+                  </>
+                )}
+              </div>
+              <div>
+                <h3 className="text-lg font-bold mb-2">Detalhes do Cliente</h3>
+                <div className="mb-4">
+                  <label htmlFor="username" className="block font-medium text-gray-700">
+                    Nome de Utilizador:
+                  </label>
+                  <input
+                    id="username"
+                    type="text"
+                    value={getCookie('username')}
+                    readOnly
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="email" className="block font-medium text-gray-700">
+                    Email:
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    value={email}
+                    onChange={handleEmailChange}
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="phone" className="block font-medium text-gray-700">
+                    Telefone:
+                  </label>
+                  <input
+                    id="phone"
+                    type="tel"
+                    value={phone}
+                    onChange={handlePhoneChange}
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  />
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="address" className="block font-medium text-gray-700">
+                    Morada:
+                  </label>
+                  <textarea
+                    id="address"
+                    rows="4"
+                    value={address}
+                    onChange={handleAddressChange}
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  ></textarea>
+                </div>
+                <div className="mb-4">
+                  <label htmlFor="paymentMethod" className="block font-medium text-gray-700">
+                    Método de Pagamento:
+                  </label>
+                  <select
+                    id="paymentMethod"
+                    value={paymentMethod}
+                    onChange={handlePaymentMethodChange}
+                    className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                  >
+                    <option value="">Selecione uma opção</option>
+                    <option value="creditCard">Cartão de Crédito</option>
+                    <option value="debitCard">Cartão de Débito</option>
+                    <option value="paypal">PayPal</option>
+                  </select>
+                </div>
+                {errorMessage && <div className="text-red-600 mb-4">{errorMessage}</div>}
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? 'Enviando...' : 'Enviar Pedido'}
+                </button>
+              </div>
             </div>
-            <div className="mb-4">
-              <label htmlFor="email" className="block font-medium text-gray-700">
-                Email:
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={handleEmailChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="phone" className="block font-medium text-gray-700">
-                Telefone:
-              </label>
-              <input
-                id="phone"
-                type="tel"
-                value={phone}
-                onChange={handlePhoneChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              />
-            </div>
-            <div className="mb-4">
-              <label htmlFor="address" className="block font-medium text-gray-700">
-                Morada:
-              </label>
-              <textarea
-                id="address"
-                rows="4"
-                value={address}
-                onChange={handleAddressChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              ></textarea>
-            </div>
-            <div className="mb-4">
-              <label htmlFor="paymentMethod" className="block font-medium text-gray-700">
-                Método de Pagamento:
-              </label>
-              <select
-                id="paymentMethod"
-                value={paymentMethod}
-                onChange={handlePaymentMethodChange}
-                className="border border-gray-300 px-3 py-2 rounded-md w-full"
-              >
-                <option value="">Selecione uma opção</option>
-                <option value="creditCard">Cartão de Crédito</option>
-                <option value="debitCard">Cartão de Débito</option>
-                <option value="paypal">PayPal</option>
-                {/* Adicione mais opções de pagamento aqui, se necessário */}
-              </select>
-            </div>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-              onClick={handleSubmit}
-            >
-              Enviar Pedido
-            </button>
-          </div>
-        </div>
+          </form>
+        )}
       </div>
       <Footer />
     </div>
