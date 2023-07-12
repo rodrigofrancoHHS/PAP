@@ -9,6 +9,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userId, setUserId] = useState(null);
+  const [error, setError] = useState('');
 
   // Verifica se o cookie existe
   useEffect(() => {
@@ -71,9 +72,11 @@ const Login = () => {
         }
       } else {
         // Lidar com erro de Login
+        setError('Nome de usuário ou senha incorretos');
         console.error('Erro durante o Login');
       }
     } catch (error) {
+      setError('Erro de rede');
       console.error('Erro de rede:', error);
     }
   };
@@ -88,6 +91,7 @@ const Login = () => {
           ) : (
             <>
               <h2 className="text-3xl font-bold mb-4">Login</h2>
+              {error && <div className="text-red-500 mb-4">{error}</div>}
               <form onSubmit={handleLogin}>
                 <div className="mb-4">
                   <label htmlFor="username" className="block text-gray-700 font-medium">

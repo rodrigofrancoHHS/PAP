@@ -8,6 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -37,11 +38,14 @@ const Register = () => {
       if (response.ok) {
         // Registro realizado com sucesso
         console.log('Registro realizado com sucesso');
+        setSuccessMessage('Registro realizado com sucesso.');
         setPassword('');
         setUsername('');
         setEmail('');
       } else {
         // Lidar com erro de registro
+        setError('O nome de utilizador já existe.');
+        setSuccessMessage('');
         console.error('Erro durante o registro');
       }
     } catch (error) {
@@ -56,6 +60,7 @@ const Register = () => {
         <div className="max-w-md w-full mx-auto p-8">
           <h2 className="text-3xl font-bold mb-4">Registrar</h2>
           {error && <div className="text-red-500 mb-4">{error}</div>}
+          {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
           <div className="mb-4">
             <label htmlFor="username" className="block text-gray-700 font-medium">
               Username:
