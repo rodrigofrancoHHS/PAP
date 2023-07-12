@@ -32,6 +32,7 @@ function Header() {
   // Função para fazer logout e eliminar o cookie
   const handleLogout = () => {
     document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = 'userId=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; // Remover o cookie do userId
     setIsLoggedIn(false);
     setUsername('');
     navigate('/login');
