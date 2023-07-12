@@ -12,6 +12,8 @@ import Cart from './Cart';
 import Login from './Login';
 import Register from './Register';
 import Checkout from './checkout';
+import AdminPage from './AdminPage';
+import AdminProdutos from './AdminProdutos';
 
 function App() {
 
@@ -35,6 +37,8 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/checkout' element={<Checkout />} />
+          <Route path='/admin' element={<AdminPage />} />
+          <Route path='/admin/products' element={<AdminProdutos />} />
         </Routes>
       </BrowserRouter>
     </div>

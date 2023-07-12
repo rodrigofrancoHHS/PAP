@@ -52,7 +52,7 @@ const Login = () => {
         console.log('Login realizado com sucesso');
 
         // Extrai o ID do usuário da resposta
-        const { id } = await response.json();
+        const { id, type } = await response.json();
 
         // Cria os cookies de autenticação
         document.cookie = `username=${username}; path=/`;
@@ -62,8 +62,13 @@ const Login = () => {
         setIsLoggedIn(true);
         setUserId(id);
 
-        // Redireciona para a página Menu
-        navigate('/');
+        if (type === 0) {
+          // Redirecionar para a página de administração
+          navigate('/admin');
+        } else {
+          // Redirecionar para a página Menu
+          navigate('/');
+        }
       } else {
         // Lidar com erro de Login
         console.error('Erro durante o Login');
