@@ -81,6 +81,7 @@ const Checkout = () => {
         address: address,
         payment_method: paymentMethod,
         total_price: calculateTotalPrice(),
+        products: cartItems.map((item) => `${item.name}(${item.quantity})`).join(', ') // Formatar os produtos
       };
 
       await fetch('https://localhost:7241/api/Orders', {
