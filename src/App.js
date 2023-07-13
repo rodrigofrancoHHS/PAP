@@ -15,6 +15,7 @@ import Checkout from './checkout';
 import AdminPage from './AdminPage';
 import AdminProdutos from './AdminProdutos';
 import AdminUtilizadores from './AdminUtilizadores';
+import AdminVendas from './AdminVendas';
 
 function App() {
 
@@ -41,6 +42,7 @@ function App() {
           <Route path='/admin' element={<AdminPage />} />
           <Route path='/admin/products' element={<AdminProdutos />} />
           <Route path='/admin/users' element={<AdminUtilizadores />} />
+          <Route path='/admin/sales' element={<AdminVendas />} />
         </Routes>
       </BrowserRouter>
     </div>

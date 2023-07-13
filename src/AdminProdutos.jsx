@@ -4,6 +4,16 @@ import Sidebar from './Sidebar';
 
 const AdminProdutos = () => {
   const [produtos, setProdutos] = useState([]);
+  const [novoProduto, setNovoProduto] = useState({
+    name: '',
+    desc: '',
+    price: '',
+    rrp: '',
+    quantity: '',
+    img: '',
+    type: '',
+  });
+  const [produtoAtualizar, setProdutoAtualizar] = useState(null);
 
   useEffect(() => {
     fetch('https://localhost:7241/api/TodosProdutos/ListadeProdutos')
@@ -11,6 +21,77 @@ const AdminProdutos = () => {
       .then((data) => setProdutos(data))
       .catch((error) => console.error('Erro ao obter os produtos:', error));
   }, []);
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNovoProduto((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }));
+  };
+
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('https://localhost:7241/api/TodosProdutos/InserirAtualizarProdutos', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([novoProduto]),
+      });
+
+      if (response.ok) {
+        // Produto inserido ou atualizado com sucesso
+        console.log('Produto inserido ou atualizado com sucesso');
+        // Atualizar a lista de produtos
+        const updatedProdutos = produtos.map((produto) => {
+          if (produto.id === novoProduto.id) {
+            return { ...produto, ...novoProduto };
+          }
+          return produto;
+        });
+        setProdutos(updatedProdutos);
+        // Limpar o formulário
+        setNovoProduto({
+          name: '',
+          desc: '',
+          price: '',
+          rrp: '',
+          quantity: '',
+          img: '',
+          type: '',
+        });
+      } else {
+        console.error('Erro ao inserir ou atualizar o produto');
+      }
+    } catch (error) {
+      console.error('Erro de rede:', error);
+    }
+  };
+
+  const handleUpdateProduct = async (produto) => {
+    // Define o produto a ser atualizado
+    setProdutoAtualizar(produto);
+    // Preenche o formulário com os dados do produto selecionado
+    setNovoProduto(produto);
+  };
+
+  const handleCancelUpdate = () => {
+    // Cancela a atualização do produto
+    setProdutoAtualizar(null);
+    // Limpa o formulário
+    setNovoProduto({
+      name: '',
+      desc: '',
+      price: '',
+      rrp: '',
+      quantity: '',
+      img: '',
+      type: '',
+    });
+  };
 
   return (
     <div>
@@ -31,6 +112,7 @@ const AdminProdutos = () => {
                   <th className="border px-4 py-2">Quantidade</th>
                   <th className="border px-4 py-2">Imagem</th>
                   <th className="border px-4 py-2">Tipo</th>
+                  <th className="border px-4 py-2">Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -44,11 +126,145 @@ const AdminProdutos = () => {
                     <td className="border px-4 py-2">{produto.quantity}</td>
                     <td className="border px-4 py-2">{produto.img}</td>
                     <td className="border px-4 py-2">{produto.type}</td>
+                    <td className="border px-4 py-2">
+                      <button
+                        className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mr-2"
+                        onClick={() => handleUpdateProduct(produto)}
+                      >
+                        Atualizar
+                      </button>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+          <form onSubmit={handleFormSubmit} className="mt-8">
+            <h3 className="text-xl font-bold mb-4">Inserir Novo Produto</h3>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="mb-4">
+                <label htmlFor="name" className="block text-gray-700 font-medium">
+                  Nome:
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={novoProduto.name}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="desc" className="block text-gray-700 font-medium">
+                  Descrição:
+                </label>
+                <input
+                  type="text"
+                  id="desc"
+                  name="desc"
+                  value={novoProduto.desc}
+                  onChange={handleInputChange}
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="price" className="block text-gray-700 font-medium">
+                  Preço:
+                </label>
+                <input
+                  type="text"
+                  id="price"
+                  name="price"
+                  value={novoProduto.price}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="rrp" className="block text-gray-700 font-medium">
+                  Preço de Varejo Sugerido:
+                </label>
+                <input
+                  type="text"
+                  id="rrp"
+                  name="rrp"
+                  value={novoProduto.rrp}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="quantity" className="block text-gray-700 font-medium">
+                  Quantidade:
+                </label>
+                <input
+                  type="text"
+                  id="quantity"
+                  name="quantity"
+                  value={novoProduto.quantity}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="img" className="block text-gray-700 font-medium">
+                  Imagem:
+                </label>
+                <input
+                  type="text"
+                  id="img"
+                  name="img"
+                  value={novoProduto.img}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+              <div className="mb-4">
+                <label htmlFor="type" className="block text-gray-700 font-medium">
+                  Tipo:
+                </label>
+                <input
+                  type="text"
+                  id="type"
+                  name="type"
+                  value={novoProduto.type}
+                  onChange={handleInputChange}
+                  required
+                  className="border border-gray-300 px-3 py-2 rounded-md w-full"
+                />
+              </div>
+            </div>
+            {produtoAtualizar ? (
+              <div>
+                <button
+                  type="submit"
+                  className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md mr-2"
+                >
+                  Atualizar Produto
+                </button>
+                <button
+                  type="button"
+                  className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-md"
+                  onClick={handleCancelUpdate}
+                >
+                  Cancelar Atualização
+                </button>
+              </div>
+            ) : (
+              <button
+                type="submit"
+                className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md"
+              >
+                Inserir Produto
+              </button>
+            )}
+          </form>
         </div>
       </div>
     </div>
