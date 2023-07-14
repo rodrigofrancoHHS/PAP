@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faPhone, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import emailjs from '@emailjs/browser';
 
 const ContactPage = () => {
 
+  const form = useRef();
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs.sendForm('service_z4pvewc', 'template_b106hcc', form.current, 'RkkzsUozWo-Ps85Xh')
+      .then((result) => {
+          console.log(result.text);
+      }, (error) => {
+          console.log(error.text);
+      });
+  };
   
   return (
 
@@ -18,27 +31,33 @@ const ContactPage = () => {
         <p className="text-xl text-gray-700 mb-8">Bem-vindo à nossa página de contatos!</p>
         
         {/* Formulário de contato */}
-        <form className="w-full max-w-lg">
+        <form ref={form} onSubmit={sendEmail} className="w-full max-w-lg">
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="name">
               Nome
             </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="name" type="text" placeholder="Seu nome" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_name" type="text" placeholder="Insira o nome" />
           </div>
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="email" type="email" placeholder="Seu email" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_email" type="email" placeholder="Insira o email" />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="name">
+              Assunto
+            </label>
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="subject" type="text" placeholder="Insira o assunto" />
           </div>
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="message">
               Mensagem
             </label>
-            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="message" rows="5" placeholder="Sua mensagem"></textarea>
+            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="message" rows="5" placeholder="Insira a sua mensagem"></textarea>
           </div>
           <div className="flex items-center justify-center">
-            <button className="bg-black text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline !important" type="button">
+            <button className="bg-black text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline !important" type="submit">
               Enviar
             </button>
           </div>

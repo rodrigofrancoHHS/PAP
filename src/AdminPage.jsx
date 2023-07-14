@@ -43,7 +43,7 @@ const AdminPage = () => {
           <Sidebar />
           <div className="flex-grow p-8">
             <h2 className="text-3xl font-bold mb-4">Painel de Administração</h2>
-            <p>Bem-vindo ao painel de administração. Aqui você pode gerenciar as configurações e recursos do sistema.</p>
+            <p>Bem-vindo ao painel de administração. Aqui poderás controlarx\ as configurações e recursos do sistema.</p>
             {/* Adicione o conteúdo e os componentes relevantes para a página de administração */}
           </div>
         </div>

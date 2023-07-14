@@ -45,14 +45,17 @@ const AdminProdutos = () => {
       if (response.ok) {
         // Produto inserido ou atualizado com sucesso
         console.log('Produto inserido ou atualizado com sucesso');
-        // Atualizar a lista de produtos
-        const updatedProdutos = produtos.map((produto) => {
-          if (produto.id === novoProduto.id) {
-            return { ...produto, ...novoProduto };
-          }
-          return produto;
-        });
-        setProdutos(updatedProdutos);
+        const produtoExistente = produtos.find((produto) => produto.id === novoProduto.id);
+        if (produtoExistente) {
+          // O produto já existe, atualizar na lista
+          const updatedProdutos = produtos.map((produto) =>
+            produto.id === novoProduto.id ? novoProduto : produto
+          );
+          setProdutos(updatedProdutos);
+        } else {
+          // O produto é novo, adicioná-lo à lista
+          setProdutos([...produtos, novoProduto]);
+        }
         // Limpar o formulário
         setNovoProduto({
           name: '',
@@ -63,6 +66,7 @@ const AdminProdutos = () => {
           img: '',
           type: '',
         });
+        setProdutoAtualizar(null);
       } else {
         console.error('Erro ao inserir ou atualizar o produto');
       }
@@ -93,6 +97,40 @@ const AdminProdutos = () => {
     });
   };
 
+
+
+
+
+  
+const handleDeleteProduto = async (id) => {
+  try {
+    const response = await fetch(
+      'https://localhost:7241/api/TodosProdutos/EliminarProdutos',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify([id]),
+      }
+    );
+
+    if (response.ok) {
+      // Produto eliminado com sucesso
+      console.log('Produto eliminado com sucesso');
+      // Atualizar a lista de produtos removendo o produto eliminado
+      const updatedProdutos = produtos.filter((produto) => produto.id !== id);
+      setProdutos(updatedProdutos);
+    } else {
+      console.error('Erro ao eliminar o produto');
+    }
+  } catch (error) {
+    console.error('Erro de rede:', error);
+  }
+};
+
+
+
   return (
     <div>
       <AdminHeader />
@@ -113,6 +151,7 @@ const AdminProdutos = () => {
                   <th className="border px-4 py-2">Imagem</th>
                   <th className="border px-4 py-2">Tipo</th>
                   <th className="border px-4 py-2">Ação</th>
+                  <th className="border px-4 py-2">Ação</th>
                 </tr>
               </thead>
               <tbody>
@@ -132,6 +171,14 @@ const AdminProdutos = () => {
                         onClick={() => handleUpdateProduct(produto)}
                       >
                         Atualizar
+                      </button>
+                    </td>
+                    <td className="border px-4 py-2">
+                      <button
+                        className="bg-red-500 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded"
+                        onClick={() => handleDeleteProduto(produto.id)}
+                      >
+                        Eliminar
                       </button>
                     </td>
                   </tr>
