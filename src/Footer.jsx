@@ -26,8 +26,6 @@ function Footer() {
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Envio e Pagamento</Link></li>
               <li><Link to="/contact" className="text-gray-400 hover:text-white">Direito de Livre Resolução</Link></li>
               <li><Link to="/ContactPage/" className="text-gray-400 hover:text-white">Contacte-nos</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Lojas</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Mapa do site</Link></li>
             </ul>
           </div>
 
@@ -39,10 +37,7 @@ function Footer() {
             <h2 className="text-2xl font-bold mb-4">A SUA CONTA</h2>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-400 hover:text-white">Informação pessoal</Link></li>
-              <li><Link to="/products" className="text-gray-400 hover:text-white">Encomendas</Link></li>
-              <li><Link to="/about" className="text-gray-400 hover:text-white">Notas de crédito</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Endereços</Link></li>
-              <li><Link to="/contact" className="text-gray-400 hover:text-white">Os meus alertas</Link></li>
+              <li><Link to="/orders-page" className="text-gray-400 hover:text-white">Encomendas</Link></li>
             </ul>
           </div>
 

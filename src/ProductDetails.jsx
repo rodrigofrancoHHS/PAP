@@ -7,6 +7,8 @@ const ProductDetails = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(1);
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const apiUrl = 'https://localhost:7241';
 
@@ -46,6 +48,8 @@ const ProductDetails = () => {
     const userId = getUserIdFromCookie(); // Obtém o ID do usuário do cookie
     if (!userId) {
       console.error('ID do usuário não encontrado');
+      setError('Erro ao adicionar o produto ao carrinho. Realize o Login primeiro');
+      setSuccessMessage('');
       return;
     }
 
@@ -73,7 +77,10 @@ const ProductDetails = () => {
         }
       });
 
+      setSuccessMessage('');
       localStorage.setItem(cartItemsKey, JSON.stringify(updatedItems));
+      setSuccessMessage('O produto foi adicionado ao carrinho');
+      setError('');
     } else {
       // Adiciona o produto ao carrinho
       const newItem = {
@@ -84,8 +91,10 @@ const ProductDetails = () => {
         quantitymax: product.quantity,
         quantity: quantity,
       };
-
+      setSuccessMessage('');
       localStorage.setItem(cartItemsKey, JSON.stringify([...cartItems, newItem]));
+      setSuccessMessage('O produto foi adicionado ao carrinho');
+      setError('');
     }
 
     // Limpa a quantidade selecionada
@@ -154,6 +163,9 @@ const ProductDetails = () => {
             >
               Adicionar ao Carrinho
             </button>
+            <br /><br />
+            {error && <div className="text-red-500 mb-4">{error}</div>}
+            {successMessage && <div className="text-green-500 mb-4">{successMessage}</div>}
             <br /><br /><br />
             <p className="text-gray-700 mb-4">{product.desc}</p>
           </div>

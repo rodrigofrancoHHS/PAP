@@ -16,6 +16,7 @@ import AdminPage from './AdminPage';
 import AdminProdutos from './AdminProdutos';
 import AdminUtilizadores from './AdminUtilizadores';
 import AdminVendas from './AdminVendas';
+import UserOrdersPage from './UserOrdersPage';
 
 function App() {
 
@@ -43,6 +44,7 @@ function App() {
           <Route path='/admin/products' element={<AdminProdutos />} />
           <Route path='/admin/users' element={<AdminUtilizadores />} />
           <Route path='/admin/sales' element={<AdminVendas />} />
+          <Route path='/orders-page' element={<UserOrdersPage />} />
         </Routes>
       </BrowserRouter>
     </div>

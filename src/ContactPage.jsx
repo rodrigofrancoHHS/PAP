@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import Header from './Header';
 import Footer from './Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,18 +7,33 @@ import emailjs from '@emailjs/browser';
 
 const ContactPage = () => {
 
+
+  const [isEmailSent, setIsEmailSent] = useState(false);
+  const [nome, setNome] = useState('');
+  const [email, setEmail] = useState('');
+  const [assunto, setAssunto] = useState('');
+  const [mensagem, setMensagem] = useState('');
+
+
   const form = useRef();
 
   const sendEmail = (e) => {
     e.preventDefault();
-
+  
     emailjs.sendForm('service_z4pvewc', 'template_b106hcc', form.current, 'RkkzsUozWo-Ps85Xh')
       .then((result) => {
-          console.log(result.text);
-      }, (error) => {
-          console.log(error.text);
+        console.log(result.text);
+        setIsEmailSent(true);
+        setNome('');
+        setEmail('');
+        setAssunto('');
+        setMensagem('');
+      })
+      .catch((error) => {
+        console.log(error.text);
       });
   };
+  
   
   return (
 
@@ -31,30 +46,34 @@ const ContactPage = () => {
         <p className="text-xl text-gray-700 mb-8">Bem-vindo à nossa página de contatos!</p>
         
         {/* Formulário de contato */}
+        
         <form ref={form} onSubmit={sendEmail} className="w-full max-w-lg">
+        {isEmailSent && (
+  <div className="text-green-500 mb-4">O email foi enviado com sucesso!</div>
+)}
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="name">
               Nome
             </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_name" type="text" placeholder="Insira o nome" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_name" type="text" placeholder="Insira o nome" value={nome} onChange={(e) => setNome(e.target.value)}/>
           </div>
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="email">
               Email
             </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_email" type="email" placeholder="Insira o email" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="user_email" type="email" placeholder="Insira o email" value={email} onChange={(e) => setEmail(e.target.value)}/>
           </div>
           <div className="mb-4">
-            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="name">
+            <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="assunto">
               Assunto
             </label>
-            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="subject" type="text" placeholder="Insira o assunto" />
+            <input className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="subject" type="text" placeholder="Insira o assunto" value={assunto} onChange={(e) => setAssunto(e.target.value)}/>
           </div>
           <div className="mb-4">
             <label className="block text-gray-800 text-sm font-bold mb-2" htmlFor="message">
               Mensagem
             </label>
-            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="message" rows="5" placeholder="Insira a sua mensagem"></textarea>
+            <textarea className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" name="message" rows="5" placeholder="Insira a sua mensagem" value={mensagem} onChange={(e) => setMensagem(e.target.value)}></textarea>
           </div>
           <div className="flex items-center justify-center">
             <button className="bg-black text-white font-bold py-2 px-4 rounded w-40 focus:outline-none focus:shadow-outline !important" type="submit">

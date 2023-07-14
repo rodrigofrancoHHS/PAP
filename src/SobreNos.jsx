@@ -12,13 +12,14 @@ const SobreNos = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="flex flex-col justify-center">
               <div>
-                <h1 className="text-5xl font-bold mb-6">Conhece a nossa equipa</h1>
+                <h1 className="text-5xl font-bold mb-6">Conheça a STA - A sua loja de roupas em Santa Cruz</h1>
                 <p className="text-lg leading-relaxed mb-6">
-                  Somos uma equipe apaixonada por criar experiências incríveis para nossos clientes. Nossos talentosos designers, desenvolvedores e especialistas em marketing trabalham juntos para oferecer soluções inovadoras que impulsionam o seu negócio.
+                A STA é uma loja especializada na venda de roupas da moda, oferecendo uma ampla variedade de peças exclusivas, como t-shirts, sweats e caps. Estamos localizados em Santa Cruz, uma localidade conhecida pela sua atmosfera descontraída e estilo único.
                 </p>
                 <p className="text-lg leading-relaxed mb-6">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam id nisi vel nunc aliquam eleifend at vel leo. Cras eu dui non ligula dictum lobortis. Donec ac bibendum leo, in ullamcorper dolor. Sed vel lobortis erat. Vestibulum efficitur, mauris sit amet faucibus posuere, neque ligula dictum ligula, eget congue purus nisl sed lectus.
+                Além de oferecer uma ampla seleção de roupas, também nos orgulhamos do nosso excelente atendimento ao cliente. A nossa equipa está sempre pronta para ajudar, fornecendo orientações e sugestões personalizadas para ajudá-lo a encontrar as peças perfeitas que se adequem ao seu estilo e personalidade.
                 </p>
+                
                 <Link to="/ContactPage/" className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg inline-block">
                   Entre em contato
                 </Link>
